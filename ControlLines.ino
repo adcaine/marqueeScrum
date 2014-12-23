@@ -1,32 +1,33 @@
 #define A_PIN 10
 #define B_PIN 9
 #define C_PIN 8
+#define NUM_DECODER_PINS 3
 #define ENABLE_PIN 7
 
 
-#define MAX_STATES 7
+#define NUM_COLS 3
 
-volatile int state = 0;
+int state = 0;
+int decoderPins[3] = {A_PIN, B_PIN, C_PIN};
 
 void setup(){
-  pinMode(A_PIN, OUTPUT);
-  pinMode(B_PIN, OUTPUT);
-  pinMode(C_PIN, OUTPUT);
+  for(unsigned int i = 0; i < NUM_DECODER_PINS; i++){
+    pinMode(decoderPins[i], OUTPUT);
+  }
   pinMode(ENABLE_PIN, OUTPUT);
 }
 
 void loop(){
   digitalWrite(ENABLE_PIN, HIGH);
-  setControlLines(A_PIN, B_PIN, C_PIN, state);
+  setControlLines(decoderPins, state);
   delay(1000);
-  state = (state++) % MAX_STATES;
-  
+  state = (++state) % (NUM_COLS - 1);  
 }
 
 
-void setControlLines(int line_A, int line_B, int line_C, int value){
-  digitalWrite(line_A, value & 1 << 2);
-  digitalWrite(line_B, value & 1 << 1);
-  digitalWrite(line_C, value & 1);
+void setControlLines(int pinArray[], int value){
+  for(unsigned int i = 0; i < NUM_DECODER_PINS; i++){
+    digitalWrite(pinArray[i], value & (1 << (NUM_DECODER_PINS - 1 - i)));
+  }
 }
 
