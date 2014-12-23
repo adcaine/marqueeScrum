@@ -13,7 +13,6 @@ void setup(){
   pinMode(B_PIN, OUTPUT);
   pinMode(C_PIN, OUTPUT);
   pinMode(ENABLE_PIN, OUTPUT);
-  pinMode(CHANGE_PIN, INPUT_PULLUP);
 }
 
 void loop(){
@@ -25,7 +24,7 @@ void loop(){
 }
 
 
-void setControlLines(int line_A, int line_B, int line_B, int value){
+void setControlLines(int line_A, int line_B, int line_C, int value){
   digitalWrite(line_A, value & 1 << 2);
   digitalWrite(line_B, value & 1 << 1);
   digitalWrite(line_C, value & 1);
