@@ -2,16 +2,13 @@
 #define B_PIN 9
 #define C_PIN 8
 #define ENABLE_PIN 7
-#define CHANGE_PIN 2
+
 
 #define MAX_STATES 7
 
 volatile int state = 0;
 
-void change();
-
 void setup(){
-  //attachInterrupt(0, change, LOW);
   pinMode(A_PIN, OUTPUT);
   pinMode(B_PIN, OUTPUT);
   pinMode(C_PIN, OUTPUT);
@@ -21,14 +18,16 @@ void setup(){
 
 void loop(){
   digitalWrite(ENABLE_PIN, HIGH);
-  digitalWrite(A_PIN, state & 1 << 2);
-  digitalWrite(B_PIN, state & 1 << 1);
-  digitalWrite(C_PIN, state & 1);
+  setControlLines(A_PIN, B_PIN, C_PIN, state);
   delay(1000);
   state = (state++) % MAX_STATES;
   
 }
 
-void change(){
-  state = (state++) % MAX_STATES;
+
+void setControlLines(int line_A, int line_B, int line_B, int value){
+  digitalWrite(line_A, value & 1 << 2);
+  digitalWrite(line_B, value & 1 << 1);
+  digitalWrite(line_C, value & 1);
 }
+
