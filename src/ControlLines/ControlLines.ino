@@ -5,7 +5,7 @@
 #define ENABLE_PIN 7
 
 
-#define NUM_COLS 3
+#define NUM_COLS 5
 
 int state = 0;
 int decoderPins[3] = {A_PIN, B_PIN, C_PIN};
@@ -21,7 +21,7 @@ void loop(){
   digitalWrite(ENABLE_PIN, HIGH);
   setControlLines(decoderPins, state);
   delay(1000);
-  state = (++state) % (NUM_COLS - 1);  
+  state = ++state % NUM_COLS;  
 }
 
 
