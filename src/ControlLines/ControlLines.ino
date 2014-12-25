@@ -6,9 +6,9 @@
 #define NUM_DECODER_PINS 3
 #define ENABLE_PIN 7
 
-#define DATA_PIN 4
+#define DATA_PIN 2
 #define CLOCK_PIN 3
-#define LATCH_PIN 2
+#define LATCH_PIN 4
 
 
 #define NUM_COLS 5
@@ -135,13 +135,19 @@ void loop(){
   delay(1000);
   state = ++state % NUM_COLS;
   **/
-  for(unsigned int i = 0; i < 8; i++){
-    data = font_5x7[1][i];
+  for(unsigned int i = 0; i < NUM_COLS; i++){
+    data = font_5x7[22][i];
     setRows(DATA_PIN, CLOCK_PIN, LATCH_PIN, data);
     delay(1000); 
   }   
 }
 
+void showLetter(byte columnCodes[]){
+  for(unsigned int i = 0; i < NUM_COLS; i++){
+    setControlLines(decoderPins, i);
+    setRows(DATA_PIN, CLOCK_PIN, LATCH_PIN, columnCodes[i]);
+  }
+}
 
 void setControlLines(int pinArray[], int value){
   for(unsigned int i = 0; i < NUM_DECODER_PINS; i++){
@@ -150,6 +156,7 @@ void setControlLines(int pinArray[], int value){
 }
 
 void setRows(int dataPin, int clockPin, int latchPin, byte value){
+  digitalWrite(latchPin, LOW);
   shiftOut(dataPin, clockPin, MSBFIRST, value);
   digitalWrite(latchPin, HIGH);
   digitalWrite(latchPin, LOW);
