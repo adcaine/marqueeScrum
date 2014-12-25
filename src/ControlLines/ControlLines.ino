@@ -13,7 +13,7 @@
 
 #define NUM_COLS 5
 byte font_5x7[96][5] = {
-        {0x00,0x00,0x00,0x00,0x00}, //
+        {0xFF,0x00,0x00,0x00,0x00}, //
         {0x00,0x00,0xfa,0x00,0x00}, // !
         {0x00,0xe0,0x00,0xe0,0x00}, // "
         {0x28,0xfe,0x28,0xfe,0x28}, // #
@@ -129,23 +129,29 @@ void setup(){
 }
 
 void loop(){
-  /**
+
   digitalWrite(ENABLE_PIN, HIGH);
+  /**
   setControlLines(decoderPins, state);
   delay(1000);
   state = ++state % NUM_COLS;
-  **/
+  
   for(unsigned int i = 0; i < NUM_COLS; i++){
     data = font_5x7[22][i];
     setRows(DATA_PIN, CLOCK_PIN, LATCH_PIN, data);
     delay(1000); 
-  }   
+  }
+  **/
+
+     showLetter(52);
+  
 }
 
-void showLetter(byte columnCodes[]){
+void showLetter(int index){
   for(unsigned int i = 0; i < NUM_COLS; i++){
+    setRows(DATA_PIN, CLOCK_PIN, LATCH_PIN, font_5x7[index][i]);
     setControlLines(decoderPins, i);
-    setRows(DATA_PIN, CLOCK_PIN, LATCH_PIN, columnCodes[i]);
+    delay(2);
   }
 }
 
